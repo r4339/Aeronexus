@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Détail du contrôle
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h3>
+
+                <i class="bi bi-search"></i>
+
+                Détail du contrôle
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <td>{{ check.name }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Description</th>
+
+                    <td>{{ check.description }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Statut</th>
+
+                    <td>
+
+                        {% if check.status == "COMPLIANT" %}
+
+                            <span class="badge bg-success">
+
+                                Conforme
+
+                            </span>
+
+                        {% elif check.status == "WARNING" %}
+
+                            <span class="badge bg-warning">
+
+                                Avertissement
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+
+                                Non conforme
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Recommandation</th>
+
+                    <td>{{ check.recommendation }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <td>{{ check.checked_at }}</td>
+
+                </tr>
+
+            </table>
+
+            <a href="{% url 'compliance:checks_list' %}"
+
+               class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

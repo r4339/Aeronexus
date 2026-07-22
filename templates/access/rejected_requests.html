@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Demandes refusées
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-danger text-white">
+
+<h3>
+
+<i class="bi bi-x-circle-fill"></i>
+
+Demandes refusées
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-hover">
+
+<thead>
+
+<tr>
+
+<th>Utilisateur</th>
+
+<th>Actif</th>
+
+<th>Niveau</th>
+
+<th>Statut</th>
+
+<th>Commentaire</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for request in requests %}
+
+<tr>
+
+<td>{{ request.requester }}</td>
+
+<td>{{ request.asset }}</td>
+
+<td>{{ request.get_access_level_display }}</td>
+
+<td>
+
+<span class="badge bg-danger">
+
+{{ request.get_status_display }}
+
+</span>
+
+</td>
+
+<td>
+
+{% if request.manager_comment %}
+
+{{ request.manager_comment }}
+
+{% elif request.rssi_comment %}
+
+{{ request.rssi_comment }}
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+
+Aucune demande refusée.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+ {% extends "base.html" %}
+
+{% block title %}
+Supprimer un actif
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card border-danger">
+
+<div class="card-header bg-danger text-white">
+
+<h3>
+
+Suppression
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<p>
+
+Voulez-vous vraiment supprimer
+
+<strong>
+
+{{ asset.name }}
+
+</strong> ?
+
+</p>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<a
+href="{% url 'assets:assets_list' %}"
+class="btn btn-secondary">
+
+Annuler
+
+</a>
+
+<button
+type="submit"
+class="btn btn-danger">
+
+Supprimer
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

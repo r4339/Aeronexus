@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-dark text-white">
+
+            <h3>
+
+                <i class="bi bi-person-vcard"></i>
+
+                Détails de l'utilisateur
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+
+                    <th width="250">Nom complet</th>
+
+                    <td>{{ profile.user.get_full_name }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Nom d'utilisateur</th>
+
+                    <td>{{ profile.user.username }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Email</th>
+
+                    <td>{{ profile.user.email }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Département</th>
+
+                    <td>{{ profile.department }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Poste</th>
+
+                    <td>{{ profile.position }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Téléphone</th>
+
+                    <td>{{ profile.phone }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Statut</th>
+
+                    <td>
+
+                        {% if profile.is_active %}
+
+                        <span class="badge bg-success">
+
+                            Actif
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-danger">
+
+                            Inactif
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+            <div class="text-end">
+
+                <a href="{% url 'accounts:user_update' profile.id %}"
+                   class="btn btn-warning">
+
+                    Modifier
+
+                </a>
+
+                <a href="{% url 'accounts:users_list' %}"
+                   class="btn btn-secondary">
+
+                    Retour
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

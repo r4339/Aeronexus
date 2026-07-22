@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Journal d'audit{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'dashboard:index' %}"><i class="bi bi-house-door-fill me-1"></i>Accueil</a>
+</li>
+
+<li class="breadcrumb-item active">
+   audit
+</li>
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
+
+            <h3>
+
+                <i class="bi bi-clock-history"></i>
+
+                Journal d'audit
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover datatable">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Utilisateur</th>
+
+                        <th>Action</th>
+
+                        <th>Module</th>
+
+                        <th>Détails</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for log in logs %}
+
+                <tr>
+
+                    <td>{{ log.created_at }}</td>
+
+                    <td>{{ log.user }}</td>
+
+                    <td>
+
+                        <span class="badge bg-primary">
+
+                            {{ log.get_action_display }}
+
+                        </span>
+
+                    </td>
+
+                    <td>{{ log.module }}</td>
+
+                    <td>
+
+                        <a href="{% url 'audit:log_detail' log.id %}"
+
+                           class="btn btn-info btn-sm">
+
+                            <i class="bi bi-eye"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center">
+
+                        Aucun journal disponible.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'dashboard:index' %}"><i class="bi bi-house-door-fill me-1"></i>Accueil</a>
+</li>
+
+<li class="breadcrumb-item active">
+    Personnel
+</li>
+{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>
+
+        Gestion des utilisateurs
+
+    </h2>
+
+    {% if perms.accounts.add_userprofile %}
+<a href="{% url 'accounts:user_create' %}"
+   class="btn btn-primary">
+    <i class="bi bi-plus-circle me-1"></i>
+    Nouvel utilisateur
+</a>
+{% endif %}
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+       <table class="table table-hover align-middle datatable">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Email</th>
+
+                    <th>Département</th>
+
+                    <th>Statut</th>
+
+                    <th width="220">
+
+                        Actions
+
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for profile in users %}
+
+                <tr>
+
+                    <td>
+
+                        {{ profile.user.get_full_name }}
+
+                    </td>
+
+                    <td>
+
+                        {{ profile.user.email }}
+
+                    </td>
+
+                    <td>
+
+                        {{ profile.department }}
+
+                    </td>
+
+                    <td>
+
+                        {% if profile.is_active %}
+
+                        <span class="badge bg-success">
+
+                            Actif
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-danger">
+
+                            Désactivé
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                       {% if perms.accounts.view_userprofile %}
+<a href="{% url 'accounts:user_detail' profile.id %}"
+   class="btn btn-outline-primary btn-sm">
+    Voir
+</a>
+{% endif %}
+
+                       {% if perms.accounts.change_userprofile %}
+<a href="{% url 'accounts:user_update' profile.id %}"
+   class="btn btn-outline-warning btn-sm">
+    Modifier
+</a>
+{% endif %}
+
+                        {% if perms.accounts.change_userprofile %}
+<a href="{% url 'accounts:toggle_user_status' profile.id %}"
+   class="btn btn-outline-danger btn-sm">
+    Statut
+</a>
+{% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5"
+                        class="text-center">
+
+                        Aucun utilisateur.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

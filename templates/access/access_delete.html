@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+Supprimer la demande
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card border-danger">
+
+<div class="card-header bg-danger text-white">
+
+<h3>
+
+Suppression d'une demande
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<p>
+
+Voulez-vous supprimer cette demande ?
+
+</p>
+
+<p>
+
+<strong>
+
+{{ access_request.requester }}
+
+→
+
+{{ access_request.asset }}
+
+</strong>
+
+</p>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<a
+href="{% url 'access:requests_list' %}"
+class="btn btn-secondary">
+
+Annuler
+
+</a>
+
+<button
+type="submit"
+class="btn btn-danger">
+
+Supprimer
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

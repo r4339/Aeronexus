@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Détail du journal{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>
+
+                <i class="bi bi-file-earmark-text"></i>
+
+                Détail du journal
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+
+                    <th>Utilisateur</th>
+
+                    <td>{{ log.user }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Action</th>
+
+                    <td>{{ log.get_action_display }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Module</th>
+
+                    <td>{{ log.module }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Description</th>
+
+                    <td>{{ log.description }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <td>{{ log.created_at }}</td>
+
+                </tr>
+
+            </table>
+
+            <a href="{% url 'audit:logs_list' %}"
+
+               class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

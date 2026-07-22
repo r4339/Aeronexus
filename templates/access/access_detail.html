@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}
+Détails de la demande
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-info text-white">
+
+<h3>
+
+<i class="bi bi-eye"></i>
+
+Détails de la demande
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>Demandeur</th>
+
+<td>{{ access_request.requester }}</td>
+
+</tr>
+
+<tr>
+
+<th>Actif</th>
+
+<td>{{ access_request.asset }}</td>
+
+</tr>
+
+<tr>
+
+<th>Niveau d'accès</th>
+
+<td>{{ access_request.get_access_level_display }}</td>
+
+</tr>
+
+<tr>
+
+<th>Justification</th>
+
+<td>{{ access_request.justification }}</td>
+
+</tr>
+
+<tr>
+
+<th>Responsable</th>
+
+<td>{{ access_request.manager }}</td>
+
+</tr>
+
+<tr>
+
+<th>Statut</th>
+
+<td>
+
+<span class="badge bg-primary">
+
+{{ access_request.get_status_display }}
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Date début</th>
+
+<td>{{ access_request.start_date }}</td>
+
+</tr>
+
+<tr>
+
+<th>Date fin</th>
+
+<td>{{ access_request.end_date }}</td>
+
+</tr>
+
+</table>
+
+<a
+href="{% url 'access:requests_list' %}"
+class="btn btn-secondary">
+
+Retour
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

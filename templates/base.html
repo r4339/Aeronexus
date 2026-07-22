@@ -1,0 +1,608 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% block title %}
+            AeroNexus
+        {% endblock %}
+    </title>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+   
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+   
+
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
+
+  
+
+    <link rel="stylesheet"
+          href="{% static 'css/aeronexus.css' %}">
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+
+
+<div id="loader">
+
+    <div class="spinner-border text-primary"
+         role="status">
+
+    </div>
+
+</div>
+
+
+
+{% if user.is_authenticated %}
+
+<div id="sidebarOverlay" aria-hidden="true"></div>
+<aside class="sidebar" aria-label="Navigation principale">
+
+    <!-- Logo -->
+
+    <div class="logo">
+
+        <h2>
+
+            ✈ AERONEXUS
+
+        </h2>
+
+        <p>
+
+            Airport Identity<br>
+
+            & Access Management
+
+        </p>
+
+    </div>
+    
+    
+
+    <hr class="text-light opacity-25">
+
+    <!-- Navigation -->
+
+    <ul>
+
+        <li>
+
+            <a href="{% url 'dashboard:index' %}">
+
+                <i class="bi bi-speedometer2"></i>
+
+                Dashboard
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'accounts:users_list' %}">
+
+                <i class="bi bi-people-fill"></i>
+
+                Personnel
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'assets:assets_list' %}">
+
+                <i class="bi bi-hdd-network-fill"></i>
+
+                Ressources
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'access:requests_list' %}">
+
+                <i class="bi bi-door-open-fill"></i>
+
+                Demandes
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'habilitations:permissions_list' %}">
+
+                <i class="bi bi-shield-lock-fill"></i>
+
+                Habilitations
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'audit:logs_list' %}">
+
+                <i class="bi bi-journal-check"></i>
+
+                Audit
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'compliance:checks_list' %}">
+
+                <i class="bi bi-patch-check-fill"></i>
+
+                Conformité
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'core:reports' %}">
+
+                <i class="bi bi-bar-chart-fill"></i>
+
+                Rapports
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'core:settings' %}">
+
+                <i class="bi bi-gear-fill"></i>
+
+                Paramètres
+
+            </a>
+
+        </li>
+
+    </ul>
+
+
+
+    <div class="sidebar-footer mt-auto">
+
+        <hr class="text-light opacity-25">
+
+        <a href="{% url 'accounts:logout' %}"
+           class="text-danger text-decoration-none">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            Déconnexion
+
+        </a>
+
+    </div>
+
+</aside>
+
+<header class="topbar">
+
+    <!-- Bouton menu mobile -->
+
+    <div class="topbar-left">
+
+        <button id="sidebarToggle" class="btn sidebar-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="header-title">
+
+            <h4 class="mb-0 fw-bold">
+
+                {% block page_title %}
+
+                Airport SOC
+
+                {% endblock %}
+
+            </h4>
+
+            <small class="text-muted">
+
+                IAM Platform
+
+            </small>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="topbar-actions">
+
+        <!-- Recherche -->
+
+        <div class="global-search d-none d-lg-block">
+
+            <div class="input-group">
+
+                <span class="input-group-text bg-white border-end-0">
+
+                    <i class="bi bi-search"></i>
+
+                </span>
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    class="form-control border-start-0"
+                    placeholder="Rechercher...">
+
+            </div>
+
+        </div>
+
+        <!-- Horloge -->
+
+        <div class="live-clock d-none d-xl-block">
+
+            <div
+                id="liveClock"
+                class="small fw-semibold">
+
+            </div>
+
+        </div>
+
+   
+
+       
+
+  
+
+      <div class="dropdown notification-dropdown">
+
+            <button
+                class="icon-button"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="Afficher les notifications">
+
+                <i class="bi bi-bell fs-5"></i>
+
+                <span
+                    class="notification-count">
+
+                    {{ notifications_count|default:0 }}
+
+                </span>
+
+            </button>
+
+            <ul
+                class="dropdown-menu dropdown-menu-end shadow">
+
+                <li>
+
+                    <h6 class="dropdown-header">
+
+                        Notifications
+
+                    </h6>
+
+                </li>
+
+                <li>
+
+                    <a class="dropdown-item" href="#">
+
+                        Aucune notification.
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+        
+
+        <div class="dropdown">
+
+            <button
+                class="profile-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+
+                <div class="avatar">
+
+                    {{ user.first_name|first|default:user.username|first|upper }}
+
+                </div>
+
+                <div class="text-start profile-details d-none d-lg-block">
+
+                    <strong class="profile-name d-block">
+
+                        {{ user.get_full_name|default:user.username }}
+
+                    </strong>
+
+                    <br>
+
+                    <small class="profile-role">
+
+                        {% if user.is_superuser %}
+
+                            Administrateur
+
+                        {% else %}
+
+                            Utilisateur
+
+                        {% endif %}
+
+                    </small>
+
+                </div>
+
+                <i class="bi bi-chevron-down"></i>
+
+            </button>
+
+            <ul
+                class="dropdown-menu dropdown-menu-end shadow">
+
+                <li>
+
+                    <a class="dropdown-item" href="{% url 'accounts:my_profile' %}">
+
+                        <i class="bi bi-person-circle"></i>
+
+                        Mon profil
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a class="dropdown-item" href="#">
+
+                        <i class="bi bi-gear"></i>
+
+                        Paramètres
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <hr class="dropdown-divider">
+
+                </li>
+
+                <li>
+
+                    <a
+                        class="dropdown-item text-danger"
+                        href="{% url 'accounts:logout' %}">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Déconnexion
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="main-content">
+
+    <!-- Breadcrumb -->
+
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb align-items-center mb-0">
+        {% block breadcrumb %}
+        <li class="breadcrumb-item">
+            <a href="{% url 'dashboard:index' %}">
+                <i class="bi bi-house-door-fill me-1"></i>
+                Accueil
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active">
+            Dashboard
+        </li>
+        {% endblock %}
+    </ol>
+</nav>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert
+
+                {% if message.tags == 'success' %}
+                    alert-success
+                {% elif message.tags == 'error' %}
+                    alert-danger
+                {% elif message.tags == 'warning' %}
+                    alert-warning
+                {% else %}
+                    alert-info
+                {% endif %}
+
+                alert-dismissible fade show"
+
+                role="alert">
+
+                <i class="bi bi-check-circle-fill me-2"></i>
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    {% block content %}
+
+    {% endblock %}
+
+
+
+    <footer
+        class="mt-5 py-4 text-center text-muted">
+
+        <hr>
+
+        <p class="mb-1">
+
+            ✈ <strong>AeroNexus</strong>
+
+            Airport Identity & Access Management System
+
+        </p>
+
+        <small>
+
+            Version 1.0 |
+            Développé avec Django & Bootstrap |
+            © {% now "Y" %}
+
+        </small>
+
+    </footer>
+
+</div>
+
+{% else %}
+<div class="container py-5">
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-info">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% block auth_content %}
+
+    {% endblock %}
+
+</div>
+
+{% endif %}
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Javascript global -->
+
+<script src="{% static 'js/app.js' %}"></script>
+
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Les lignes d'état « aucun résultat » utilisent une cellule fusionnée.
+    // Elles restent lisibles sans DataTables et ne doivent pas déclencher d'alerte.
+    DataTable.ext.errMode = "none";
+    document.querySelectorAll(".datatable").forEach(function (table) {
+        if (table.querySelector("tbody td[colspan]")) {
+            return;
+        }
+        if (DataTable.isDataTable(table)) {
+            return;
+        }
+        new DataTable(table, {
+            pageLength: 10,
+            language: { url: "//cdn.datatables.net/plug-ins/2.0.8/i18n/fr-FR.json" }
+        });
+    });
+});
+</script>
+
+</body>
+
+</html>

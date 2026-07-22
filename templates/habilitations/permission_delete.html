@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Supprimer une habilitation
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card border-danger shadow">
+
+        <div class="card-header bg-danger text-white">
+
+            <h3>
+
+                <i class="bi bi-trash"></i>
+
+                Confirmation
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <p>
+
+                Voulez-vous vraiment supprimer cette habilitation ?
+
+            </p>
+
+            <p>
+
+                <strong>
+
+                    {{ permission.user }}
+
+                </strong>
+
+                →
+
+                {{ permission.asset }}
+
+            </p>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <a
+
+                    href="{% url 'habilitations:permissions_list' %}"
+
+                    class="btn btn-secondary">
+
+                    Annuler
+
+                </a>
+
+                <button
+
+                    type="submit"
+
+                    class="btn btn-danger">
+
+                    Supprimer
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

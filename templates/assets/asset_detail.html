@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}
+Détails d'un actif
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow-lg">
+
+<div class="card-header bg-info text-white">
+
+<h3>
+
+<i class="bi bi-hdd"></i>
+
+{{ asset.name }}
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<tr>
+<th>Code</th>
+<td>{{ asset.asset_code }}</td>
+</tr>
+
+<tr>
+<th>Catégorie</th>
+<td>{{ asset.category }}</td>
+</tr>
+
+<tr>
+<th>Responsable</th>
+<td>{{ asset.owner }}</td>
+</tr>
+
+<tr>
+<th>Localisation</th>
+<td>{{ asset.location }}</td>
+</tr>
+
+<tr>
+<th>Criticité</th>
+<td>{{ asset.get_criticality_display }}</td>
+</tr>
+
+<tr>
+<th>Statut</th>
+<td>{{ asset.get_status_display }}</td>
+</tr>
+
+<tr>
+<th>Description</th>
+<td>{{ asset.description }}</td>
+</tr>
+
+<tr>
+<th>Confidentialité</th>
+<td>{{ asset.confidentiality }}</td>
+</tr>
+
+<tr>
+<th>Intégrité</th>
+<td>{{ asset.integrity }}</td>
+</tr>
+
+<tr>
+<th>Disponibilité</th>
+<td>{{ asset.availability }}</td>
+</tr>
+
+</table>
+
+<a
+href="{% url 'assets:assets_list' %}"
+class="btn btn-secondary">
+
+Retour
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

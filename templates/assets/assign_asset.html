@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+Affecter un actif
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>
+
+Nouvelle affectation
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<div class="text-end">
+
+<button
+type="submit"
+class="btn btn-success">
+
+Affecter
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

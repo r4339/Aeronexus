@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Habilitations révoquées
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-danger text-white">
+
+            <h3>
+
+                <i class="bi bi-x-octagon-fill"></i>
+
+                Habilitations révoquées
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Utilisateur</th>
+
+                        <th>Actif</th>
+
+                        <th>Accès</th>
+
+                        <th>Date de révocation</th>
+
+                        <th>Motif</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for permission in permissions %}
+
+                <tr>
+
+                    <td>{{ permission.user }}</td>
+
+                    <td>{{ permission.asset }}</td>
+
+                    <td>{{ permission.access_level }}</td>
+
+                    <td>{{ permission.revoked_at }}</td>
+
+                    <td>{{ permission.revoke_reason }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center">
+
+                        Aucune habilitation révoquée.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
