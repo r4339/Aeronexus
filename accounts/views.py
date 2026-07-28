@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import (
     permission_required,
 )
 from django.contrib import messages
+from django.views.decorators.http import require_POST
 
 from .models import UserProfile
 from .forms import UserForm,UserUpdateForm, UserProfileForm
@@ -25,7 +26,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect("accounts:users_list")
+            return redirect("dashboard:index")
 
         messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
 
@@ -190,7 +191,7 @@ def user_update(request, id):
     "accounts.change_userprofile",
     raise_exception=True
 )
-
+@require_POST
 def toggle_user_status(request, id):
 
         profile = get_object_or_404(
@@ -205,4 +206,4 @@ def toggle_user_status(request, id):
         "Statut de l'utilisateur mis à jour."
          )
 
-        return redirect("accounts:dashboard:index")
+        return redirect("accounts:users_list")

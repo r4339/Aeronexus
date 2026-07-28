@@ -82,7 +82,7 @@
 
                     <td>
 
-                        {% if profile.is_active %}
+                        {% if profile.is_active_employee %}
 
                         <span class="badge bg-success">
 
@@ -119,10 +119,10 @@
 {% endif %}
 
                         {% if perms.accounts.change_userprofile %}
-<a href="{% url 'accounts:toggle_user_status' profile.id %}"
-   class="btn btn-outline-danger btn-sm">
-    Statut
-</a>
+<form method="post" action="{% url 'accounts:toggle_user_status' profile.id %}" class="d-inline">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-danger btn-sm">Statut</button>
+</form>
 {% endif %}
 
                     </td>

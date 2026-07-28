@@ -90,6 +90,7 @@
 
     <ul>
 
+        {% if user.is_authenticated %}
         <li>
 
             <a href="{% url 'dashboard:index' %}">
@@ -101,7 +102,9 @@
             </a>
 
         </li>
+        {% endif %}
 
+        {% if perms.accounts.view_userprofile %}
         <li>
 
             <a href="{% url 'accounts:users_list' %}">
@@ -113,7 +116,9 @@
             </a>
 
         </li>
+        {% endif %}
 
+        {% if perms.assets.view_asset %}
         <li>
 
             <a href="{% url 'assets:assets_list' %}">
@@ -125,7 +130,9 @@
             </a>
 
         </li>
+        {% endif %}
 
+        {% if perms.access.view_accessrequest %}
         <li>
 
             <a href="{% url 'access:requests_list' %}">
@@ -137,7 +144,9 @@
             </a>
 
         </li>
+        {% endif %}
 
+        {% if perms.habilitations.view_permission %}
         <li>
 
             <a href="{% url 'habilitations:permissions_list' %}">
@@ -149,7 +158,9 @@
             </a>
 
         </li>
+        {% endif %}
 
+        {% if perms.audit.view_auditlog %}
         <li>
 
             <a href="{% url 'audit:logs_list' %}">
@@ -161,7 +172,9 @@
             </a>
 
         </li>
+        {% endif %}
 
+        {% if perms.compliance.view_compliancecheck %}
         <li>
 
             <a href="{% url 'compliance:checks_list' %}">
@@ -173,6 +186,7 @@
             </a>
 
         </li>
+        {% endif %}
 
         <li>
 
@@ -327,15 +341,16 @@
 
                 </li>
 
+                {% for notification in notifications %}
                 <li>
-
-                    <a class="dropdown-item" href="#">
-
-                        Aucune notification.
-
+                    <a class="dropdown-item text-wrap" href="{% url 'access:request_detail' notification.id %}">
+                        <strong>Nouvelle demande</strong><br>
+                        <small>{{ notification.requester }} → {{ notification.asset }}</small>
                     </a>
-
                 </li>
+                {% empty %}
+                <li><span class="dropdown-item-text text-muted">Aucune notification.</span></li>
+                {% endfor %}
 
             </ul>
 
@@ -450,16 +465,11 @@
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb align-items-center mb-0">
         {% block breadcrumb %}
-        <li class="breadcrumb-item">
-            <a href="{% url 'dashboard:index' %}">
-                <i class="bi bi-house-door-fill me-1"></i>
-                Accueil
-            </a>
+        {% for crumb in breadcrumbs %}
+        <li class="breadcrumb-item {% if not crumb.url %}active{% endif %}">
+            {% if crumb.url %}<a href="{{ crumb.url }}">{% if forloop.first %}<i class="bi bi-house-door-fill me-1"></i>{% endif %}{{ crumb.label }}</a>{% else %}{{ crumb.label }}{% endif %}
         </li>
-
-        <li class="breadcrumb-item active">
-            Dashboard
-        </li>
+        {% endfor %}
         {% endblock %}
     </ol>
 </nav>

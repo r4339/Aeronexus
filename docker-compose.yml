@@ -24,6 +24,11 @@ services:
       - db
 
     restart: unless-stopped
+    logging:
+     driver: json-file
+     options:
+       max-size: "10m"
+       max-file: "3"
   db:
 
     image: postgres:18
@@ -41,6 +46,11 @@ services:
       - postgres_data:/var/lib/postgresql
 
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
     healthcheck:
       test:
@@ -73,6 +83,11 @@ services:
       - web
 
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   postgres_data:
