@@ -23,3 +23,6 @@ __pycache__/
 # Optional Terraform variable secrets
 *.tfvars
 *.tfvars.json
+# Production local files
+certbot/
+*.backup-https
