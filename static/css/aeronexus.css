@@ -28,8 +28,25 @@ body { min-height: 100vh; margin: 0; overflow-x: hidden; background: var(--canva
 .sidebar.active { transform: translateX(0); }
 #sidebarOverlay { position: fixed; inset: 0; z-index: 1045; visibility: hidden; background: rgba(6, 20, 40, .36); opacity: 0; transition: opacity .28s ease, visibility .28s ease; }
 #sidebarOverlay.show { visibility: visible; opacity: 1; }
-.logo { padding: 42px 24px 34px; text-align: center; }
-.logo h2 { margin: 0 0 14px; color: #fff; font-size: 1.7rem; font-weight: 800; letter-spacing: .13em; white-space: nowrap; }
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 42px 16px 34px;
+    text-align: center;
+}
+
+.logo h2 {
+    width: 100%;
+    margin: 0 0 14px;
+    color: #fff;
+    font-size: clamp(1.28rem, 5.5vw, 1.48rem);
+    font-weight: 800;
+    letter-spacing: .09em;
+    line-height: 1.2;
+    white-space: normal;
+}
 .logo p { margin: 0; color: #c5d8f6; font-size: .84rem; line-height: 1.65; }
 .sidebar hr { margin: 0 18px 20px; }
 .sidebar ul { flex: 1; margin: 0; padding: 0 12px; list-style: none; }
@@ -84,6 +101,19 @@ body { min-height: 100vh; margin: 0; overflow-x: hidden; background: var(--canva
 .table thead { background: var(--navy); color: #fff; }
 .table thead th { border: 0; font-size: .8rem; letter-spacing: .03em; text-transform: uppercase; }
 .alert { border: 0; border-radius: 13px; box-shadow: 0 6px 20px rgba(23,48,84,.08); }
+
+/* Access request workspace */
+.access-page-header { padding: 4px 2px; }
+.access-page-header h2 { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--navy); letter-spacing: -.025em; }
+.access-page-header h2 i { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 12px; color: var(--blue); background: var(--sky); font-size: 1.2rem; }
+.access-page-header p { margin: 0; color: var(--muted); }
+.access-table-card .card-body { padding: 0; }
+.access-table-card .table th, .access-table-card .table td { padding: 15px 18px; vertical-align: middle; }
+.access-table-card .table tbody tr { transition: background .18s ease, transform .18s ease; }
+.access-table-card .table tbody tr:hover { box-shadow: inset 3px 0 0 var(--blue); }
+.request-actions { white-space: nowrap; }
+.request-actions .btn { width: 34px; height: 34px; padding: 0; border-radius: 10px; }
+.badge { padding: .48em .72em; border-radius: 999px; font-size: .74rem; font-weight: 700; letter-spacing: .01em; }
 
 @media (max-width: 1199px) { .live-clock { display: none; } .global-search { width: min(270px, 28vw); } }
 @media (max-width: 991px) {

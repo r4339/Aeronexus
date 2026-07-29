@@ -4,10 +4,17 @@ from django.contrib.auth.decorators import (
     permission_required,
 )
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.views.decorators.http import require_POST
 
 from .models import AccessRequest
 from .forms import AccessRequestForm
 from .services import AccessRequestService
+
+
+def _can_manage_access_requests(user):
+    """Only platform administrators may make an access decision."""
+    return user.is_superuser or user.groups.filter(name="Administrateur").exists()
 
 
 @login_required
@@ -23,7 +30,8 @@ def requests_list(request):
         request,
         "access/access_list.html",
         {
-            "requests": requests
+            "requests": requests,
+            "can_manage_access_requests": _can_manage_access_requests(request.user),
         }
     )
 
@@ -171,7 +179,11 @@ def request_delete(request, id):
 
 
 @login_required
+@require_POST
 def approve_request(request, id):
+
+    if not _can_manage_access_requests(request.user):
+        raise PermissionDenied
 
     access_request = get_object_or_404(
     AccessRequest,
@@ -204,7 +216,11 @@ def approve_request(request, id):
 
     return redirect("access:requests_list")
 @login_required
+@require_POST
 def reject_request(request, id):
+
+    if not _can_manage_access_requests(request.user):
+        raise PermissionDenied
 
     access_request = get_object_or_404(
     AccessRequest,
@@ -274,7 +290,8 @@ def pending_requests(request):
         request,
         "access/pending_requests.html",
         {
-            "requests": requests
+            "requests": requests,
+            "can_manage_access_requests": _can_manage_access_requests(request.user),
         }
     )
 @login_required

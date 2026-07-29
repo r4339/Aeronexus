@@ -12,9 +12,9 @@
 {% endblock %}
 {% block content %}
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4 access-workspace">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="access-page-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 
         <div>
 
@@ -29,6 +29,7 @@
 
         </div>
 
+        {% if perms.access.add_accessrequest %}
         <a href="{% url 'access:request_create' %}"
            class="btn btn-primary">
 
@@ -37,14 +38,16 @@
             Nouvelle demande
 
         </a>
+        {% endif %}
 
     </div>
 
-    <div class="card shadow">
+    <div class="card access-table-card">
 
         <div class="card-body">
 
-            <table class="table table-hover">
+            <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
 
                 <thead class="table-dark">
 
@@ -92,13 +95,19 @@
                                     En attente
                                 </span>
 
-                            {% elif request.status == "APPROVED" %}
+                            {% elif request.status == "MANAGER_APPROVED" %}
+
+                                <span class="badge text-bg-info">
+                                    Validée par le responsable
+                                </span>
+
+                            {% elif request.status == "RSSI_APPROVED" or request.status == "COMPLETED" %}
 
                                 <span class="badge bg-success">
                                     Approuvée
                                 </span>
 
-                            {% elif request.status == "REJECTED" %}
+                            {% elif request.status == "MANAGER_REJECTED" or request.status == "RSSI_REJECTED" %}
 
                                 <span class="badge bg-danger">
                                     Refusée
@@ -114,7 +123,7 @@
 
                         </td>
 
-                        <td>
+                        <td class="request-actions text-nowrap">
 
                             <a href="{% url 'access:request_detail' request.id %}"
                                class="btn btn-info btn-sm">
@@ -123,26 +132,29 @@
 
                             </a>
 
+                            {% if perms.access.change_accessrequest %}
                             <a href="{% url 'access:request_update' request.id %}"
                                class="btn btn-warning btn-sm">
 
                                 <i class="bi bi-pencil"></i>
 
                             </a>
+                            {% endif %}
 
-                            <a href="{% url 'access:approve_request' request.id %}"
-                               class="btn btn-success btn-sm">
-
-                                <i class="bi bi-check-circle"></i>
-
-                            </a>
-
-                            <a href="{% url 'access:reject_request' request.id %}"
-                               class="btn btn-danger btn-sm">
-
-                                <i class="bi bi-x-circle"></i>
-
-                            </a>
+                            {% if can_manage_access_requests and request.status == "PENDING" or can_manage_access_requests and request.status == "MANAGER_APPROVED" %}
+                            <form method="post" action="{% url 'access:approve_request' request.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm" title="Approuver" aria-label="Approuver la demande">
+                                    <i class="bi bi-check-circle"></i>
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'access:reject_request' request.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm" title="Refuser" aria-label="Refuser la demande">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </form>
+                            {% endif %}
 
                         </td>
 
@@ -165,6 +177,7 @@
                 </tbody>
 
             </table>
+            </div>
 
         </div>
 

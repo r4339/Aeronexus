@@ -60,21 +60,18 @@
 
                     <td>{{ request.end_date }}</td>
 
-                    <td>
+                    <td class="request-actions text-nowrap">
 
-                        <a href="{% url 'access:approve_request' request.id %}"
-                           class="btn btn-success btn-sm">
-
-                            <i class="bi bi-check-circle"></i>
-
-                        </a>
-
-                        <a href="{% url 'access:reject_request' request.id %}"
-                           class="btn btn-danger btn-sm">
-
-                            <i class="bi bi-x-circle"></i>
-
-                        </a>
+                        {% if can_manage_access_requests %}
+                        <form method="post" action="{% url 'access:approve_request' request.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm" title="Approuver" aria-label="Approuver la demande"><i class="bi bi-check-circle"></i></button>
+                        </form>
+                        <form method="post" action="{% url 'access:reject_request' request.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" title="Refuser" aria-label="Refuser la demande"><i class="bi bi-x-circle"></i></button>
+                        </form>
+                        {% endif %}
 
                         <a href="{% url 'access:request_detail' request.id %}"
                            class="btn btn-info btn-sm">
